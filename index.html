@@ -663,26 +663,195 @@ tr:hover td { background: rgba(255,145,77,.055); }
 </div>
 
 <script>
-const summary = [{"player": "Gabriel Hughes", "matches": 6, "gamesPlayed": 24, "gamesWon": 13, "gamesLost": 11, "winPct": 54, "singlePairs": 4, "singlesOnly": 2, "chalkPairs": 2, "absent": 0}, {"player": "Matt Goodwin", "matches": 6, "gamesPlayed": 24, "gamesWon": 16, "gamesLost": 8, "winPct": 67, "singlePairs": 4, "singlesOnly": 2, "chalkPairs": 2, "absent": 1}, {"player": "Zac Moran", "matches": 0, "gamesPlayed": 0, "gamesWon": 0, "gamesLost": 0, "winPct": 0, "singlePairs": 0, "singlesOnly": 0, "chalkPairs": 0, "absent": 8}, {"player": "Darren Jarrett", "matches": 5, "gamesPlayed": 20, "gamesWon": 13, "gamesLost": 7, "winPct": 65, "singlePairs": 4, "singlesOnly": 1, "chalkPairs": 2, "absent": 1}, {"player": "Mike Orbell", "matches": 6, "gamesPlayed": 24, "gamesWon": 11, "gamesLost": 13, "winPct": 46, "singlePairs": 4, "singlesOnly": 2, "chalkPairs": 2, "absent": 0}, {"player": "Corey Johnson", "matches": 3, "gamesPlayed": 12, "gamesWon": 10, "gamesLost": 2, "winPct": 83, "singlePairs": 3, "singlesOnly": 0, "chalkPairs": 0, "absent": 5}, {"player": "James Sargent", "matches": 6, "gamesPlayed": 24, "gamesWon": 8, "gamesLost": 16, "winPct": 33, "singlePairs": 4, "singlesOnly": 2, "chalkPairs": 2, "absent": 6}];
-const matches = [{"player": "Gabriel Hughes", "round": "Round 1", "date": "18 Mar", "opponent": "Home: MANGERE W2", "role": "Singles Only", "wins": 2, "played": 4, "won": 2, "lost": 2, "winPct": 50}, {"player": "Gabriel Hughes", "round": "Round 2", "date": "25 Mar", "opponent": "Home: PUKEKOHE W5", "role": "Single + Pairs", "wins": 2, "played": 4, "won": 2, "lost": 2, "winPct": 50}, {"player": "Gabriel Hughes", "round": "Round 4", "date": "8 Apr", "opponent": "Away: MANUREWA W2", "role": "Single + Pairs", "wins": 3, "played": 4, "won": 3, "lost": 1, "winPct": 75}, {"player": "Gabriel Hughes", "round": "Round 5", "date": "15 Apr", "opponent": "Home: MTWDC W8", "role": "Singles Only", "wins": 2, "played": 4, "won": 2, "lost": 2, "winPct": 50}, {"player": "Gabriel Hughes", "round": "Round 6", "date": "22 Apr", "opponent": "Away: PUKEKOHE W4", "role": "Single + Pairs", "wins": 2, "played": 4, "won": 2, "lost": 2, "winPct": 50}, {"player": "Gabriel Hughes", "round": "Round 8", "date": "6 May", "opponent": "Home: HOWICK W5", "role": "Single + Pairs", "wins": 2, "played": 4, "won": 2, "lost": 2, "winPct": 50}, {"player": "Matt Goodwin", "round": "Round 1", "date": "18 Mar", "opponent": "Home: MANGERE W2", "role": "Single + Pairs", "wins": 2, "played": 4, "won": 2, "lost": 2, "winPct": 50}, {"player": "Matt Goodwin", "round": "Round 3", "date": "1 Apr", "opponent": "Home: HOWICK W6", "role": "Single + Pairs", "wins": 2, "played": 4, "won": 2, "lost": 2, "winPct": 50}, {"player": "Matt Goodwin", "round": "Round 4", "date": "8 Apr", "opponent": "Away: MANUREWA W2", "role": "Single + Pairs", "wins": 4, "played": 4, "won": 4, "lost": 0, "winPct": 100}, {"player": "Matt Goodwin", "round": "Round 5", "date": "15 Apr", "opponent": "Home: MTWDC W8", "role": "Singles Only", "wins": 3, "played": 4, "won": 3, "lost": 1, "winPct": 75}, {"player": "Matt Goodwin", "round": "Round 7", "date": "29 Apr", "opponent": "Home: PAPATOETOE W3", "role": "Single + Pairs", "wins": 2, "played": 4, "won": 2, "lost": 2, "winPct": 50}, {"player": "Matt Goodwin", "round": "Round 8", "date": "6 May", "opponent": "Home: HOWICK W5", "role": "Singles Only", "wins": 3, "played": 4, "won": 3, "lost": 1, "winPct": 75}, {"player": "Darren Jarrett", "round": "Round 1", "date": "18 Mar", "opponent": "Home: MANGERE W2", "role": "Single + Pairs", "wins": 2, "played": 4, "won": 2, "lost": 2, "winPct": 50}, {"player": "Darren Jarrett", "round": "Round 2", "date": "25 Mar", "opponent": "Home: PUKEKOHE W5", "role": "Singles Only", "wins": 3, "played": 4, "won": 3, "lost": 1, "winPct": 75}, {"player": "Darren Jarrett", "round": "Round 3", "date": "1 Apr", "opponent": "Home: HOWICK W6", "role": "Single + Pairs", "wins": 3, "played": 4, "won": 3, "lost": 1, "winPct": 75}, {"player": "Darren Jarrett", "round": "Round 5", "date": "15 Apr", "opponent": "Home: MTWDC W8", "role": "Single + Pairs", "wins": 4, "played": 4, "won": 4, "lost": 0, "winPct": 100}, {"player": "Darren Jarrett", "round": "Round 6", "date": "22 Apr", "opponent": "Away: PUKEKOHE W4", "role": "Single + Pairs", "wins": 1, "played": 4, "won": 1, "lost": 3, "winPct": 25}, {"player": "Mike Orbell", "round": "Round 1", "date": "18 Mar", "opponent": "Home: MANGERE W2", "role": "Single + Pairs", "wins": 3, "played": 4, "won": 3, "lost": 1, "winPct": 75}, {"player": "Mike Orbell", "round": "Round 2", "date": "25 Mar", "opponent": "Home: PUKEKOHE W5", "role": "Single + Pairs", "wins": 2, "played": 4, "won": 2, "lost": 2, "winPct": 50}, {"player": "Mike Orbell", "round": "Round 3", "date": "1 Apr", "opponent": "Home: HOWICK W6", "role": "Single + Pairs", "wins": 1, "played": 4, "won": 1, "lost": 3, "winPct": 25}, {"player": "Mike Orbell", "round": "Round 4", "date": "8 Apr", "opponent": "Away: MANUREWA W2", "role": "Singles Only", "wins": 3, "played": 4, "won": 3, "lost": 1, "winPct": 75}, {"player": "Mike Orbell", "round": "Round 6", "date": "22 Apr", "opponent": "Away: PUKEKOHE W4", "role": "Single + Pairs", "wins": 0, "played": 4, "won": 0, "lost": 4, "winPct": 0}, {"player": "Mike Orbell", "round": "Round 7", "date": "29 Apr", "opponent": "Home: PAPATOETOE W3", "role": "Singles Only", "wins": 2, "played": 4, "won": 2, "lost": 2, "winPct": 50}, {"player": "Corey Johnson", "round": "Round 5", "date": "15 Apr", "opponent": "Home: MTWDC W8", "role": "Single + Pairs", "wins": 4, "played": 4, "won": 4, "lost": 0, "winPct": 100}, {"player": "Corey Johnson", "round": "Round 7", "date": "29 Apr", "opponent": "Home: PAPATOETOE W3", "role": "Single + Pairs", "wins": 3, "played": 4, "won": 3, "lost": 1, "winPct": 75}, {"player": "Corey Johnson", "round": "Round 8", "date": "6 May", "opponent": "Home: HOWICK W5", "role": "Single + Pairs", "wins": 3, "played": 4, "won": 3, "lost": 1, "winPct": 75}, {"player": "James Sargent", "round": "Round 2", "date": "25 Mar", "opponent": "Home: PUKEKOHE W5", "role": "Single + Pairs", "wins": 1, "played": 4, "won": 1, "lost": 3, "winPct": 25}, {"player": "James Sargent", "round": "Round 3", "date": "1 Apr", "opponent": "Home: HOWICK W6", "role": "Singles Only", "wins": 1, "played": 4, "won": 1, "lost": 3, "winPct": 25}, {"player": "James Sargent", "round": "Round 4", "date": "8 Apr", "opponent": "Away: MANUREWA W2", "role": "Single + Pairs", "wins": 2, "played": 4, "won": 2, "lost": 2, "winPct": 50}, {"player": "James Sargent", "round": "Round 6", "date": "22 Apr", "opponent": "Away: PUKEKOHE W4", "role": "Single + Pairs", "wins": 2, "played": 4, "won": 2, "lost": 2, "winPct": 50}, {"player": "James Sargent", "round": "Round 7", "date": "29 Apr", "opponent": "Home: PAPATOETOE W3", "role": "Singles Only", "wins": 1, "played": 4, "won": 1, "lost": 3, "winPct": 25}, {"player": "James Sargent", "round": "Round 8", "date": "6 May", "opponent": "Home: HOWICK W5", "role": "Single + Pairs", "wins": 1, "played": 4, "won": 1, "lost": 3, "winPct": 25}];
+const SPREADSHEET_ID = "1Zi0OHmTvxZOpkgBy7TcrKQW8lu7QQjtIOhxV65Icl2g";
 
-const byWin = [...summary].sort((a,b) => b.winPct - a.winPct || b.gamesWon - a.gamesWon);
-const byWins = [...summary].sort((a,b) => b.gamesWon - a.gamesWon);
-const players = summary.map(d => d.player);
+const SHEETS = {
+  main: "0",
+  matchData: "345678901",
+  roleData: "345678902",
+  playerSummary: "345678903"
+};
+
+let summary = [];
+let matches = [];
+let byWin = [];
+let byWins = [];
+
 const select = document.getElementById("playerSelect");
 
-players.forEach(p => {
-  const opt = document.createElement("option");
-  opt.value = p;
-  opt.textContent = p;
-  if (p === "Gabriel Hughes") opt.selected = true;
-  select.appendChild(opt);
-});
+function csvUrl(gid) {
+  return `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&gid=${gid}`;
+}
 
-document.getElementById("topPlayer").textContent = byWin[0].player.split(" ")[0] + " " + byWin[0].winPct + "%";
-document.getElementById("mostWins").textContent = byWins[0].player.split(" ")[0] + " " + byWins[0].gamesWon;
-const teamRecord = { wins: 4, draws: 2, losses: 2 };
-document.getElementById("teamRecord").textContent = `${teamRecord.wins}W ${teamRecord.draws}D ${teamRecord.losses}L`;
+function parseCSV(text) {
+  const rows = [];
+  let row = [];
+  let cell = "";
+  let inQuotes = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+    const next = text[i + 1];
+
+    if (char === '"' && inQuotes && next === '"') {
+      cell += '"';
+      i++;
+    } else if (char === '"') {
+      inQuotes = !inQuotes;
+    } else if (char === "," && !inQuotes) {
+      row.push(cell);
+      cell = "";
+    } else if ((char === "\n" || char === "\r") && !inQuotes) {
+      if (char === "\r" && next === "\n") i++;
+      row.push(cell);
+      rows.push(row);
+      row = [];
+      cell = "";
+    } else {
+      cell += char;
+    }
+  }
+
+  if (cell.length || row.length) {
+    row.push(cell);
+    rows.push(row);
+  }
+
+  return rows;
+}
+
+function numberFrom(value) {
+  if (value === undefined || value === null) return 0;
+  const cleaned = String(value).replace("%", "").trim();
+  const n = Number(cleaned);
+  return Number.isFinite(n) ? n : 0;
+}
+
+function clean(value) {
+  return String(value ?? "").trim();
+}
+
+async function loadCsv(gid) {
+  const response = await fetch(csvUrl(gid), { cache: "no-store" });
+  if (!response.ok) {
+    throw new Error(`Could not load sheet gid ${gid}. Check that the sheet is published to the web.`);
+  }
+  return parseCSV(await response.text());
+}
+
+function buildSummary(rows) {
+  return rows.slice(1)
+    .filter(r => clean(r[0]) && !clean(r[0]).includes("#REF!"))
+    .map(r => ({
+      player: clean(r[0]),
+      matches: numberFrom(r[1]),
+      gamesPlayed: numberFrom(r[2]),
+      gamesWon: numberFrom(r[3]),
+      gamesLost: numberFrom(r[4]),
+      winPct: numberFrom(r[5]),
+      singlePairs: numberFrom(r[6]),
+      singlesOnly: numberFrom(r[7]),
+      chalkPairs: numberFrom(r[8]),
+      absent: numberFrom(r[9])
+    }));
+}
+
+function roundNumber(roundLabel) {
+  const match = String(roundLabel).match(/\d+/);
+  return match ? Number(match[0]) : 0;
+}
+
+function buildMatches(rows) {
+  return rows.slice(1)
+    .filter(r => clean(r[0]) && clean(r[1]) && !clean(r[0]).includes("#REF!"))
+    .map(r => ({
+      player: clean(r[0]),
+      round: clean(r[1]),
+      date: clean(r[2]),
+      opponent: clean(r[3]),
+      role: clean(r[4]),
+      wins: numberFrom(r[5]),
+      played: numberFrom(r[6]),
+      won: numberFrom(r[7]),
+      lost: numberFrom(r[8]),
+      winPct: numberFrom(r[9])
+    }))
+    .sort((a, b) => {
+      const playerOrder = summary.findIndex(p => p.player === a.player) - summary.findIndex(p => p.player === b.player);
+      return playerOrder || roundNumber(a.round) - roundNumber(b.round);
+    });
+}
+
+function buildTeamRecord(mainRows) {
+  let wins = 0;
+  let draws = 0;
+  let losses = 0;
+
+  mainRows.forEach(row => {
+    row.forEach(cell => {
+      const value = clean(cell).toUpperCase();
+      if (/^W\s*:/.test(value)) wins++;
+      if (/^D\s*:/.test(value)) draws++;
+      if (/^L\s*:/.test(value)) losses++;
+    });
+  });
+
+  return { wins, draws, losses };
+}
+
+function populatePlayerSelect() {
+  select.innerHTML = "";
+  summary.forEach((p, index) => {
+    const opt = document.createElement("option");
+    opt.value = p.player;
+    opt.textContent = p.player;
+    if (index === 0) opt.selected = true;
+    select.appendChild(opt);
+  });
+}
+
+function setTopCards(teamRecord) {
+  byWin = [...summary].sort((a,b) => b.winPct - a.winPct || b.gamesWon - a.gamesWon);
+  byWins = [...summary].sort((a,b) => b.gamesWon - a.gamesWon);
+
+  document.getElementById("topPlayer").textContent = byWin.length ? byWin[0].player.split(" ")[0] + " " + byWin[0].winPct + "%" : "-";
+  document.getElementById("mostWins").textContent = byWins.length ? byWins[0].player.split(" ")[0] + " " + byWins[0].gamesWon : "-";
+  document.getElementById("teamRecord").textContent = `${teamRecord.wins}W ${teamRecord.draws}D ${teamRecord.losses}L`;
+}
+
+async function loadLiveData() {
+  try {
+    document.getElementById("matchCount").textContent = "Loading live data...";
+
+    const [mainRows, summaryRows, matchRows] = await Promise.all([
+      loadCsv(SHEETS.main),
+      loadCsv(SHEETS.playerSummary),
+      loadCsv(SHEETS.matchData)
+    ]);
+
+    summary = buildSummary(summaryRows);
+    matches = buildMatches(matchRows);
+    const teamRecord = buildTeamRecord(mainRows);
+
+    if (!summary.length) {
+      throw new Error("No player summary rows found. Check the Player_Summary published tab.");
+    }
+
+    populatePlayerSelect();
+    setTopCards(teamRecord);
+    makeLeaderboard();
+    render();
+  } catch (error) {
+    console.error(error);
+    document.getElementById("matchCount").textContent = "Live data failed to load";
+    document.getElementById("insights").innerHTML = `
+      <div class="insight">
+        <b>Live data issue:</b> ${error.message}<br><br>
+        Make sure the spreadsheet is published to the web, including Main Sheet, Match_Data and Player_Summary.
+      </div>
+    `;
+  }
+}
 
 function playerSummary(name) {
   return summary.find(d => d.player === name) || summary[0];
@@ -877,8 +1046,7 @@ function render() {
 
 select.addEventListener("change", render);
 
-makeLeaderboard();
-render();
+loadLiveData();
 </script>
 </body>
 </html>
