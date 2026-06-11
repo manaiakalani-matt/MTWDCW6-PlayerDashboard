@@ -163,7 +163,7 @@ select {
   margin-top: 8px;
 }
 .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 18px; margin-top: 18px; }
-.kpi { grid-column: span 3; padding: 18px; }
+.kpi { grid-column: span 2; padding: 18px; }
 .kpi .label {
   color: var(--muted);
   font-family: Arial, sans-serif;
@@ -585,9 +585,69 @@ tr:hover td { background: rgba(255,145,77,.055); }
   }
 }
 
+
+.span6 { grid-column: span 6; }
+
+body.dashboardHome .playerOnly {
+  display: none !important;
+}
+
+body.dashboardPlayer .homeOnly {
+  display: none !important;
+}
+
+body.dashboardPlayer .hero {
+  grid-template-columns: 1fr;
+}
+
+.oneEightyTally {
+  display: grid;
+  gap: 10px;
+}
+
+.oneEightyTallyRow {
+  display: grid;
+  grid-template-columns: 58px 1fr;
+  gap: 14px;
+  align-items: center;
+  padding: 13px 0;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.oneEightyCount {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--orange);
+  color: #111;
+  font-size: 26px;
+  font-style: italic;
+}
+
+.oneEightyNames {
+  font-size: 20px;
+  color: var(--text);
+}
+
+.oneEightyMeta {
+  color: var(--muted);
+  font-family: Arial, sans-serif;
+  letter-spacing: 0;
+  font-size: 12px;
+  margin-top: 3px;
+}
+
+@media (max-width: 980px) {
+  .span6 {
+    grid-column: span 12;
+  }
+}
+
 </style>
 </head>
-<body>
+<body class="dashboardHome">
 <div class="app">
   <section class="hero">
     <div class="card heroMain">
@@ -597,14 +657,14 @@ tr:hover td { background: rgba(255,145,77,.055); }
         <div>
           <div class="eyebrow">Mt Wellington Darts Club</div>
           <h1>MTWDC W6 <span>Player Dashboard</span></h1>
-          <p class="sub">Player form, role balance, match history and selection notes for the W6 darts crew.</p>
+          <p class="sub">Team stats, player form, role balance and match history for the W6 darts crew.</p>
         </div>
       </div>
       <div class="toolbar">
         <select id="playerSelect" aria-label="Select player"></select>
       </div>
     </div>
-    <div class="card heroSide">
+    <div class="card heroSide homeOnly">
       <div class="bigStat">
         <div class="label">Top win rate</div>
         <div class="value" id="topPlayer">-</div>
@@ -617,43 +677,48 @@ tr:hover td { background: rgba(255,145,77,.055); }
         <div class="label">Team performance</div>
         <div class="value" id="teamRecord">-</div>
       </div>
+      <div class="bigStat">
+        <div class="label">Total 180s</div>
+        <div class="value" id="totalOneEighties">-</div>
+      </div>
     </div>
   </section>
 
   <section class="grid">
-    <div class="card kpi"><div class="label">Selected win rate</div><div class="value" id="kpiWin">-</div><small id="kpiWinSub"></small></div>
-    <div class="card kpi"><div class="label">Games won</div><div class="value" id="kpiGamesWon">-</div><small>total leg wins</small></div>
-    <div class="card kpi"><div class="label">Matches played</div><div class="value" id="kpiMatches">-</div><small>scored appearances</small></div>
-    <div class="card kpi"><div class="label">Absences</div><div class="value" id="kpiAbsences">-</div><small>from role tracker</small></div>
+    <div class="card kpi playerOnly"><div class="label">Selected win rate</div><div class="value" id="kpiWin">-</div><small id="kpiWinSub"></small></div>
+    <div class="card kpi playerOnly"><div class="label">Games won</div><div class="value" id="kpiGamesWon">-</div><small>games won</small></div>
+    <div class="card kpi playerOnly"><div class="label">Matches played</div><div class="value" id="kpiMatches">-</div><small>scored appearances</small></div>
+    <div class="card kpi playerOnly"><div class="label">Absences</div><div class="value" id="kpiAbsences">-</div><small>from role tracker</small></div>
+    <div class="card kpi playerOnly"><div class="label">180s</div><div class="value" id="kpiOneEighties">-</div><small>maximums hit</small></div>
 
-    <div class="card panel span4">
-      <div class="sectionTitle"><h2>Leaderboard</h2><span>Win rate</span></div>
+    <div class="card panel span6 homeOnly">
+      <div class="sectionTitle"><h2>Win% Leaderboard</h2><span>Team home</span></div>
       <div id="leaderboard"></div>
     </div>
 
-    <div class="card panel span8">
+    <div class="card panel span6 homeOnly">
+      <div class="sectionTitle"><h2>180 Tally</h2><span>Maximums</span></div>
+      <div class="oneEightyTally" id="oneEightyTally"></div>
+    </div>
+
+    <div class="card panel span12 playerOnly">
       <div class="sectionTitle"><h2>Selected player profile</h2><span id="selectedName"></span></div>
       <div id="playerProfile"></div>
       <div class="sectionTitle" style="margin-top:18px"><h2>Form trend</h2><span>Match by match</span></div>
       <svg id="sparkline" viewBox="0 0 720 210"></svg>
     </div>
 
-    <div class="card panel span5">
+    <div class="card panel span12 playerOnly">
       <div class="sectionTitle"><h2>Role balance</h2><span>Selection pattern</span></div>
       <div class="rolePills" id="roles"></div>
       <div id="roleInsight" class="insight"></div>
     </div>
 
-    <div class="card panel span7">
-      <div class="sectionTitle"><h2>Coach notes</h2><span>Auto generated</span></div>
-      <div id="insights"></div>
-    </div>
-
-    <div class="card panel span12">
+    <div class="card panel span12 playerOnly">
       <div class="sectionTitle"><h2>Match log</h2><span id="matchCount"></span></div>
       <table>
         <thead>
-          <tr><th>Player</th><th>Round</th><th>Date</th><th>Opponent</th><th>Role</th><th>Won</th><th>Lost</th><th>Win %</th></tr>
+          <tr><th>Round</th><th>Date</th><th>Opponent</th><th>Role</th><th>Won</th><th>Lost</th><th>Win %</th><th>180s</th></tr>
         </thead>
         <tbody id="matchRows"></tbody>
       </table>
@@ -799,13 +864,147 @@ function buildTeamRecord(mainRows) {
   return { wins, draws, losses };
 }
 
+
+function buildPlayerNumberMap(mainRows) {
+  const map = new Map();
+
+  mainRows.forEach(row => {
+    const rego = clean(row[4]);
+    const player = clean(row[5]);
+
+    if (/^\d+$/.test(rego) && player) {
+      map.set(rego, player);
+    }
+  });
+
+  return map;
+}
+
+let oneEightiesByRoundPlayer = new Map();
+
+function buildOneEighties(mainRows) {
+  const playerNumberMap = buildPlayerNumberMap(mainRows);
+  const counts = new Map();
+  const byRoundPlayer = new Map();
+  const roundRow = mainRows[0] || [];
+
+  summary.forEach(player => counts.set(player.player, 0));
+
+  const row = mainRows.find(r =>
+    r.some(cell => {
+      const value = clean(cell).toLowerCase();
+      return value === "180's" || value === "180s";
+    })
+  );
+
+  if (!row) return { counts, byRoundPlayer };
+
+  row.forEach((cell, colIndex) => {
+    const value = clean(cell);
+    const lower = value.toLowerCase();
+
+    if (!value || lower === "180's" || lower === "180s") return;
+
+    const numbers = value.match(/\d+/g) || [];
+    if (!numbers.length) return;
+
+    let roundName = "";
+    for (let c = colIndex; c >= 0; c--) {
+      const possibleRound = clean(roundRow[c]);
+      if (/^Round\s+\d+/i.test(possibleRound)) {
+        roundName = possibleRound;
+        break;
+      }
+    }
+
+    if (roundName && !byRoundPlayer.has(roundName)) {
+      byRoundPlayer.set(roundName, new Map());
+    }
+
+    numbers.forEach(number => {
+      const player = playerNumberMap.get(number);
+      if (!player) return;
+
+      counts.set(player, (counts.get(player) || 0) + 1);
+
+      if (roundName) {
+        const roundMap = byRoundPlayer.get(roundName);
+        roundMap.set(player, (roundMap.get(player) || 0) + 1);
+      }
+    });
+  });
+
+  return { counts, byRoundPlayer };
+}
+
+function applyOneEighties(data) {
+  const counts = data.counts || new Map();
+  oneEightiesByRoundPlayer = data.byRoundPlayer || new Map();
+
+  summary = summary.map(player => ({
+    ...player,
+    oneEighties: counts.get(player.player) || 0
+  }));
+}
+
+
+function oneEightiesForPlayerRound(player, round) {
+  const roundMap = oneEightiesByRoundPlayer.get(round);
+  if (!roundMap) return 0;
+  return roundMap.get(player) || 0;
+}
+
+function setOneEightiesHomeCard() {
+  const el = document.getElementById("totalOneEighties");
+  if (!el) return;
+
+  const total = summary.reduce((sum, player) => sum + (player.oneEighties || 0), 0);
+  el.textContent = total;
+}
+
+function renderOneEightyTally() {
+  const root = document.getElementById("oneEightyTally");
+  if (!root) return;
+
+  const grouped = new Map();
+
+  summary.forEach(player => {
+    const count = player.oneEighties || 0;
+    if (!grouped.has(count)) grouped.set(count, []);
+    grouped.get(count).push(player.player);
+  });
+
+  const counts = [...grouped.keys()].sort((a, b) => b - a);
+
+  root.innerHTML = counts.map(count => {
+    const players = grouped.get(count).sort((a, b) => a.localeCompare(b));
+    const label = count === 1 ? "180" : "180s";
+
+    return `
+      <div class="oneEightyTallyRow">
+        <div class="oneEightyCount">${count}</div>
+        <div>
+          <div class="oneEightyNames">${players.join(", ")}</div>
+          <div class="oneEightyMeta">${label}</div>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
 function populatePlayerSelect() {
   select.innerHTML = "";
-  summary.forEach((p, index) => {
+
+  const homeOpt = document.createElement("option");
+  homeOpt.value = "__HOME__";
+  homeOpt.textContent = "Team Home";
+  homeOpt.selected = true;
+  select.appendChild(homeOpt);
+
+  summary.forEach((p) => {
     const opt = document.createElement("option");
     opt.value = p.player;
     opt.textContent = p.player;
-    if (index === 0) opt.selected = true;
     select.appendChild(opt);
   });
 }
@@ -817,6 +1016,7 @@ function setTopCards(teamRecord) {
   document.getElementById("topPlayer").textContent = byWin.length ? byWin[0].player.split(" ")[0] + " " + byWin[0].winPct + "%" : "-";
   document.getElementById("mostWins").textContent = byWins.length ? byWins[0].player.split(" ")[0] + " " + byWins[0].gamesWon : "-";
   document.getElementById("teamRecord").textContent = `${teamRecord.wins}W ${teamRecord.draws}D ${teamRecord.losses}L`;
+  setOneEightiesHomeCard();
 }
 
 async function loadLiveData() {
@@ -830,6 +1030,7 @@ async function loadLiveData() {
     ]);
 
     summary = buildSummary(summaryRows);
+    applyOneEighties(buildOneEighties(mainRows));
     matches = buildMatches(matchRows);
     const teamRecord = buildTeamRecord(mainRows);
 
@@ -840,16 +1041,15 @@ async function loadLiveData() {
     populatePlayerSelect();
     setTopCards(teamRecord);
     makeLeaderboard();
+    renderOneEightyTally();
     render();
   } catch (error) {
     console.error(error);
     document.getElementById("matchCount").textContent = "Live data failed to load";
-    document.getElementById("insights").innerHTML = `
-      <div class="insight">
-        <b>Live data issue:</b> ${error.message}<br><br>
-        Make sure the spreadsheet is published to the web, including Main Sheet, Match_Data and Player_Summary.
-      </div>
-    `;
+    const matchBody = document.getElementById("matchRows");
+    if (matchBody) {
+      matchBody.innerHTML = `<tr><td colspan="8"><b>Live data issue:</b> ${error.message}</td></tr>`;
+    }
   }
 }
 
@@ -858,6 +1058,7 @@ function playerSummary(name) {
 }
 
 function playerMatches(name) {
+  if (name === "__HOME__") return [];
   return matches.filter(d => d.player === name);
 }
 
@@ -946,6 +1147,7 @@ function makeInsights(s, ms) {
     <div class="insight"><b>Recent form:</b> Last ${recent.length} scored appearances average ${recentAvg}%. ${recentAvg >= s.winPct ? "Recent form is matching or beating the season average." : "Recent form is below the season average, worth watching before locking in a key role."}</div>
     <div class="insight"><b>Best night:</b> ${best ? best.round + " vs " + best.opponent + " at " + best.winPct + "%" : "No scored matches yet."}</div>
     <div class="insight"><b>Selection note:</b> Main role so far is ${mainRole[0]}. ${s.absent > 3 ? "Availability is the biggest factor to solve." : "Availability looks manageable."}</div>
+    <div class="insight"><b>180s:</b> ${s.oneEighties ? s.player.split(" ")[0] + " has hit " + s.oneEighties + " maximum" + (s.oneEighties === 1 ? "." : "s.") : "No recorded 180s yet."}</div>
     <div class="insight"><b>Risk marker:</b> ${worst ? "Lowest scoring night was " + worst.round + " at " + worst.winPct + "%." : "No risk pattern yet."}</div>
   `;
 }
@@ -978,6 +1180,8 @@ function makeProfile(s) {
   document.getElementById("kpiGamesWon").textContent = s.gamesWon;
   document.getElementById("kpiMatches").textContent = s.matches;
   document.getElementById("kpiAbsences").textContent = s.absent;
+  const oneEightiesEl = document.getElementById("kpiOneEighties");
+  if (oneEightiesEl) oneEightiesEl.textContent = s.oneEighties || 0;
   document.getElementById("playerProfile").innerHTML = `
     <div class="playerCard">
       <div class="mini">Games played<b>${s.gamesPlayed}</b></div>
@@ -998,10 +1202,10 @@ function renderMatches() {
 
   rows.forEach(d => {
     const cls = d.winPct >= 75 ? "good" : d.winPct >= 50 ? "warn" : "bad";
+    const round180s = oneEightiesForPlayerRound(d.player, d.round);
 
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td><b>${d.player}</b></td>
       <td>${d.round}</td>
       <td>${d.date}</td>
       <td>${d.opponent}</td>
@@ -1009,6 +1213,7 @@ function renderMatches() {
       <td>${d.won}</td>
       <td>${d.lost}</td>
       <td class="${cls}"><b>${d.winPct}%</b></td>
+      <td>${round180s || ""}</td>
     `;
     body.appendChild(tr);
 
@@ -1026,6 +1231,7 @@ function renderMatches() {
       <div class="matchBottom">
         <span class="tag">${d.role}</span>
         <span>${d.won} won, ${d.lost} lost</span>
+        <span>180s: ${round180s || 0}</span>
       </div>
     `;
     cards.appendChild(card);
@@ -1035,11 +1241,21 @@ function renderMatches() {
 }
 
 function render() {
+  const isHome = select.value === "__HOME__";
+
+  document.body.classList.toggle("dashboardHome", isHome);
+  document.body.classList.toggle("dashboardPlayer", !isHome);
+
+  if (isHome) {
+    document.getElementById("matchCount").textContent = "";
+    return;
+  }
+
   const s = playerSummary(select.value);
   const ms = playerMatches(select.value);
+
   makeProfile(s);
   makeRoles(s);
-  makeInsights(s, ms);
   drawSparkline(ms);
   renderMatches();
 }
