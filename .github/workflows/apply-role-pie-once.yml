@@ -1,0 +1,249 @@
+name: Apply role pie chart once
+
+on:
+  push:
+    paths:
+      - .github/workflows/apply-role-pie-once.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Patch player dashboard role card
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path('index.html')
+          text = path.read_text()
+
+          css_marker = '.pill small { color: var(--orange); margin-left: 6px; }\n'
+          css_addition = '''
+.rolePiePanel {
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  gap: 18px;
+  align-items: center;
+  padding: 16px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.09);
+  margin-bottom: 12px;
+}
+.rolePie {
+  width: 156px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  position: relative;
+  background: var(--role-gradient, rgba(255,255,255,.1));
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.18), 0 16px 35px rgba(0,0,0,.25);
+}
+.rolePie:after {
+  content: "";
+  position: absolute;
+  inset: 34px;
+  border-radius: 50%;
+  background: #171719;
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: inset 0 0 18px rgba(0,0,0,.34);
+}
+.rolePieCenter {
+  position: absolute;
+  inset: 38px;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+.rolePieCenter b {
+  display: block;
+  color: var(--text);
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  font-size: 36px;
+  line-height: .9;
+  font-style: italic;
+}
+.rolePieCenter small {
+  display: block;
+  color: var(--muted);
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  margin-top: 4px;
+  text-transform: uppercase;
+}
+.roleLegend {
+  display: grid;
+  gap: 8px;
+}
+.roleLegendRow {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr) auto auto;
+  gap: 8px;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  letter-spacing: 0;
+  font-size: 13px;
+}
+.roleDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(255,255,255,.06);
+}
+.roleLegendLabel {
+  color: var(--text);
+  font-weight: 900;
+}
+.roleLegendCount {
+  color: var(--orange);
+  font-weight: 900;
+}
+.roleLegendPct {
+  color: var(--muted);
+  min-width: 38px;
+  text-align: right;
+}
+.rolePillsBelow {
+  margin-top: 10px;
+}
+'''
+
+          if '.rolePiePanel {' not in text:
+              if css_marker not in text:
+                  raise SystemExit('Could not find role pill CSS marker')
+              text = text.replace(css_marker, css_marker + css_addition, 1)
+
+          mobile_marker = '  .pill {\n    font-size: 12px;\n    padding: 9px 10px;\n  }\n'
+          mobile_css = '''
+
+  .rolePiePanel {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    text-align: left;
+  }
+
+  .rolePie {
+    width: 138px;
+    margin: 0 auto;
+  }
+
+  .roleLegendRow {
+    font-size: 12px;
+  }
+'''
+          if '.rolePiePanel {\n    grid-template-columns: 1fr;' not in text:
+              if mobile_marker not in text:
+                  raise SystemExit('Could not find mobile role pill CSS marker')
+              text = text.replace(mobile_marker, mobile_marker + mobile_css, 1)
+
+          text = text.replace('''    "Single + Pairs": s.singlePairs,
+    "Singles Only": s.singlesOnly,
+    "Chalk + Pairs": s.chalkPairs,
+    "ABSENT": s.absent''', '''    "Singles + Pairs": s.singlePairs,
+    "Singles Only": s.singlesOnly,
+    "Chalk": s.chalkPairs,
+    "DNP": s.absent''')
+
+          text = text.replace('<div class="mini">Single + Pairs<b>${s.singlePairs}</b></div>', '<div class="mini">Singles + Pairs<b>${s.singlePairs}</b></div>')
+
+          new_roles = r'''function rolePieData(s) {
+  return [
+    { label: "Singles + Pairs", count: s.singlePairs, color: "#d7ff73" },
+    { label: "Singles Only", count: s.singlesOnly, color: "#ff914d" },
+    { label: "Chalk", count: s.chalkPairs, color: "#55575b" },
+    { label: "DNP", count: s.absent, color: "#ff655c" }
+  ];
+}
+
+function makeRolePieGradient(roles, total) {
+  if (!total) return "rgba(255,255,255,.1)";
+
+  let cursor = 0;
+  const segments = roles
+    .filter(role => role.count > 0)
+    .map(role => {
+      const start = cursor;
+      cursor += (role.count / total) * 100;
+      return `${role.color} ${start}% ${cursor}%`;
+    });
+
+  return `conic-gradient(${segments.join(", ")})`;
+}
+
+function makeRoles(s) {
+  const root = document.getElementById("roles");
+  root.innerHTML = "";
+
+  const roles = rolePieData(s);
+  const total = roles.reduce((sum, role) => sum + role.count, 0);
+
+  const piePanel = document.createElement("div");
+  piePanel.className = "rolePiePanel";
+  piePanel.innerHTML = `
+    <div class="rolePie" style="--role-gradient: ${makeRolePieGradient(roles, total)}">
+      <div class="rolePieCenter"><div><b>${total}</b><small>nights</small></div></div>
+    </div>
+    <div class="roleLegend">
+      ${roles.map(role => {
+        const pct = total ? Math.round((role.count / total) * 100) : 0;
+        return `
+          <div class="roleLegendRow">
+            <span class="roleDot" style="background:${role.color}"></span>
+            <span class="roleLegendLabel">${role.label}</span>
+            <span class="roleLegendCount">${role.count}</span>
+            <span class="roleLegendPct">${pct}%</span>
+          </div>
+        `;
+      }).join("")}
+    </div>
+  `;
+  root.appendChild(piePanel);
+
+  const pills = document.createElement("div");
+  pills.className = "rolePills rolePillsBelow";
+  roles.forEach(role => {
+    const p = document.createElement("div");
+    p.className = "pill";
+    p.innerHTML = `${role.label} <small>${role.count}</small>`;
+    pills.appendChild(p);
+  });
+  root.appendChild(pills);
+
+  const activeRoles = roles.filter(role => role.label !== "DNP" && role.count > 0).length;
+  document.getElementById("roleInsight").innerHTML =
+    `<b>Balance check:</b> ${s.player} has been used across ${activeRoles} active role type${activeRoles === 1 ? "" : "s"}. ` +
+    `${s.chalkPairs >= 2 ? "They have carried chalk duties enough to keep the roster fair." : "They have had limited chalk duty so far."}`;
+}'''
+
+          pattern = r'function makeRoles\(s\) \{\n.*?\n\}\n\nfunction makeProfile\(s\) \{'
+          replacement = new_roles + '\n\nfunction makeProfile(s) {'
+          text, count = re.subn(pattern, replacement, text, count=1, flags=re.S)
+          if count != 1 and 'function rolePieData(s)' not in text:
+              raise SystemExit(f'Could not replace makeRoles function, replacements: {count}')
+
+          path.write_text(text)
+          PY
+
+      - name: Commit patched dashboard and remove one-off workflow
+        run: |
+          rm -f .github/workflows/apply-role-pie-once.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html .github/workflows/apply-role-pie-once.yml
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "Add player role pie chart"
+          git push
