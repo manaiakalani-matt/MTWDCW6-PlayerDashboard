@@ -244,6 +244,166 @@ svg { width: 100%; height: 210px; display:block; }
   letter-spacing: 0;
 }
 .pill small { color: var(--orange); margin-left: 6px; }
+
+.rolePiePanel {
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  gap: 18px;
+  align-items: center;
+  padding: 16px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.09);
+  margin-bottom: 12px;
+}
+
+.rolePie {
+  width: 156px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  position: relative;
+  background: var(--role-gradient, rgba(255,255,255,.1));
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.18), 0 16px 35px rgba(0,0,0,.25);
+}
+
+.rolePie:after {
+  content: "";
+  position: absolute;
+  inset: 34px;
+  border-radius: 50%;
+  background: #171719;
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: inset 0 0 18px rgba(0,0,0,.34);
+}
+
+.rolePieCenter {
+  position: absolute;
+  inset: 38px;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+.rolePieCenter b {
+  display: block;
+  color: var(--text);
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  font-size: 36px;
+  line-height: .9;
+  font-style: italic;
+}
+
+.rolePieCenter small {
+  display: block;
+  color: var(--muted);
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  margin-top: 4px;
+  text-transform: uppercase;
+}
+
+.roleLegend {
+  display: grid;
+  gap: 8px;
+}
+
+.roleLegendRow {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr) auto auto;
+  gap: 8px;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  letter-spacing: 0;
+  font-size: 13px;
+}
+
+.roleDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(255,255,255,.06);
+}
+
+.roleLegendLabel {
+  color: var(--text);
+  font-weight: 900;
+}
+
+.roleLegendCount {
+  color: var(--orange);
+  font-weight: 900;
+}
+
+.roleLegendPct {
+  color: var(--muted);
+  min-width: 38px;
+  text-align: right;
+}
+
+.roleRecordPanel {
+  margin-top: 12px;
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(255,145,77,.08);
+  border: 1px solid rgba(255,145,77,.2);
+}
+
+.roleRecordTitle {
+  color: var(--orange);
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.roleRecordRow {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  padding: 9px 0;
+  border-top: 1px solid rgba(255,255,255,.08);
+  font-family: Arial, sans-serif;
+  letter-spacing: 0;
+}
+
+.roleRecordRow:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.roleRecordMain {
+  min-width: 0;
+}
+
+.roleRecordLabel {
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.roleRecordSub {
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+.roleRecordScore {
+  color: var(--lime);
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  font-size: 22px;
+  font-style: italic;
+  white-space: nowrap;
+}
+
+.rolePillsBelow {
+  margin-top: 10px;
+}
 table { width: 100%; border-collapse: collapse; overflow: hidden; font-family: Arial, sans-serif; letter-spacing: 0; }
 th, td { text-align:left; padding: 12px 10px; border-bottom: 1px solid rgba(255,255,255,.08); font-size: 14px; }
 th { color: var(--orange); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
@@ -496,6 +656,31 @@ tr:hover td { background: rgba(255,145,77,.055); }
     padding: 9px 10px;
   }
 
+  
+  .rolePiePanel {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    text-align: left;
+  }
+
+  .rolePie {
+    width: 138px;
+    margin: 0 auto;
+  }
+
+  .roleLegendRow,
+  .roleRecordRow {
+    font-size: 12px;
+  }
+
+  .roleRecordPanel {
+    padding: 12px;
+  }
+
+  .roleRecordScore {
+    font-size: 20px;
+  }
+
   .insight {
     font-size: 13px;
     padding: 12px;
@@ -600,6 +785,12 @@ body.dashboardPlayer .hero {
   grid-template-columns: 1fr;
 }
 
+@media (min-width: 721px) {
+  body.dashboardPlayer .kpi {
+    grid-column: span 3;
+  }
+}
+
 .oneEightyTally {
   display: grid;
   gap: 10px;
@@ -688,7 +879,6 @@ body.dashboardPlayer .hero {
     <div class="card kpi playerOnly"><div class="label">Selected win rate</div><div class="value" id="kpiWin">-</div><small id="kpiWinSub"></small></div>
     <div class="card kpi playerOnly"><div class="label">Games won</div><div class="value" id="kpiGamesWon">-</div><small>games won</small></div>
     <div class="card kpi playerOnly"><div class="label">Matches played</div><div class="value" id="kpiMatches">-</div><small>scored appearances</small></div>
-    <div class="card kpi playerOnly"><div class="label">Absences</div><div class="value" id="kpiAbsences">-</div><small>from role tracker</small></div>
     <div class="card kpi playerOnly"><div class="label">180s</div><div class="value" id="kpiOneEighties">-</div><small>maximums hit</small></div>
 
     <div class="card panel span6 homeOnly">
@@ -702,16 +892,13 @@ body.dashboardPlayer .hero {
     </div>
 
     <div class="card panel span12 playerOnly">
-      <div class="sectionTitle"><h2>Selected player profile</h2><span id="selectedName"></span></div>
-      <div id="playerProfile"></div>
-      <div class="sectionTitle" style="margin-top:18px"><h2>Form trend</h2><span>Match by match</span></div>
+      <div class="sectionTitle"><h2>Form trend</h2><span>Match by match</span></div>
       <svg id="sparkline" viewBox="0 0 720 210"></svg>
     </div>
 
     <div class="card panel span12 playerOnly">
-      <div class="sectionTitle"><h2>Role balance</h2><span>Selection pattern</span></div>
+      <div class="sectionTitle"><h2>Role mix</h2><span>Selection and team record</span></div>
       <div class="rolePills" id="roles"></div>
-      <div id="roleInsight" class="insight"></div>
     </div>
 
     <div class="card panel span12 playerOnly">
@@ -741,6 +928,7 @@ let summary = [];
 let matches = [];
 let byWin = [];
 let byWins = [];
+let teamResultByRound = new Map();
 
 const select = document.getElementById("playerSelect");
 
@@ -826,6 +1014,12 @@ function roundNumber(roundLabel) {
   return match ? Number(match[0]) : 0;
 }
 
+function roundKey(roundLabel) {
+  const num = roundNumber(roundLabel);
+  if (num) return `round-${num}`;
+  return clean(roundLabel).toLowerCase();
+}
+
 function buildMatches(rows) {
   return rows.slice(1)
     .filter(r => clean(r[0]) && clean(r[1]) && !clean(r[0]).includes("#REF!"))
@@ -862,6 +1056,38 @@ function buildTeamRecord(mainRows) {
   });
 
   return { wins, draws, losses };
+}
+
+function buildTeamResultByRound(mainRows) {
+  const results = new Map();
+  const roundRow = mainRows[0] || [];
+
+  mainRows.forEach(row => {
+    row.forEach((cell, colIndex) => {
+      const match = clean(cell).match(/^([WDL])\s*:/i);
+      if (!match) return;
+
+      let roundName = "";
+      for (let c = colIndex; c >= 0; c--) {
+        const possibleRound = clean(roundRow[c]);
+        if (/^Round\s+\d+/i.test(possibleRound)) {
+          roundName = possibleRound;
+          break;
+        }
+      }
+
+      const key = roundKey(roundName);
+      if (key) {
+        results.set(key, match[1].toUpperCase());
+      }
+    });
+  });
+
+  return results;
+}
+
+function teamResultForRound(roundLabel) {
+  return teamResultByRound.get(roundKey(roundLabel));
 }
 
 
@@ -1032,6 +1258,7 @@ async function loadLiveData() {
     summary = buildSummary(summaryRows);
     applyOneEighties(buildOneEighties(mainRows));
     matches = buildMatches(matchRows);
+    teamResultByRound = buildTeamResultByRound(mainRows);
     const teamRecord = buildTeamRecord(mainRows);
 
     if (!summary.length) {
@@ -1134,10 +1361,10 @@ function makeInsights(s, ms) {
   const best = ms.length ? [...ms].sort((a,b)=>b.winPct-a.winPct)[0] : null;
   const worst = ms.length ? [...ms].sort((a,b)=>a.winPct-b.winPct)[0] : null;
   const roleCounts = {
-    "Single + Pairs": s.singlePairs,
+    "Singles + Pairs": s.singlePairs,
     "Singles Only": s.singlesOnly,
-    "Chalk + Pairs": s.chalkPairs,
-    "ABSENT": s.absent
+    "Chalk": s.chalkPairs,
+    "DNP": s.absent
   };
   const mainRole = Object.entries(roleCounts).sort((a,b)=>b[1]-a[1])[0];
 
@@ -1152,44 +1379,146 @@ function makeInsights(s, ms) {
   `;
 }
 
-function makeRoles(s) {
+function rolePieData(s) {
+  return [
+    { key: "singlesPairs", label: "Singles + Pairs", count: s.singlePairs, color: "#d7ff73" },
+    { key: "singlesOnly", label: "Singles Only", count: s.singlesOnly, color: "#ff914d" },
+    { key: "chalk", label: "Chalk", count: s.chalkPairs, color: "#55575b" },
+    { key: "dnp", label: "DNP", count: s.absent, color: "#ff655c" }
+  ];
+}
+
+function makeRolePieGradient(roles, total) {
+  if (!total) return "rgba(255,255,255,.1)";
+
+  let cursor = 0;
+  const segments = roles
+    .filter(role => role.count > 0)
+    .map(role => {
+      const start = cursor;
+      cursor += (role.count / total) * 100;
+      return `${role.color} ${start}% ${cursor}%`;
+    });
+
+  return `conic-gradient(${segments.join(", ")})`;
+}
+
+function roleKeyFromMatchRole(role) {
+  const value = clean(role).toLowerCase().replace(/\s+/g, " ");
+
+  if (!value) return "";
+  if (value.includes("single") && value.includes("pair")) return "singlesPairs";
+  if (value.includes("singles only") || value.includes("single only")) return "singlesOnly";
+  if (value.includes("chalk")) return "chalk";
+  if (value === "dnp" || value === "absent") return "dnp";
+
+  return "";
+}
+
+function isPlayingRole(role) {
+  const key = roleKeyFromMatchRole(role);
+  return key === "singlesPairs" || key === "singlesOnly";
+}
+
+function buildTeamPlayingRecord(ms) {
+  const rounds = new Set();
+
+  ms.forEach(match => {
+    if (!isPlayingRole(match.role)) return;
+
+    const round = clean(match.round);
+    if (round) rounds.add(round);
+  });
+
+  const record = {
+    wins: 0,
+    losses: 0,
+    draws: 0,
+    played: rounds.size,
+    recorded: 0
+  };
+
+  rounds.forEach(round => {
+    const result = teamResultForRound(round);
+    if (!result) return;
+
+    record.recorded++;
+    if (result === "W") record.wins++;
+    if (result === "L") record.losses++;
+    if (result === "D") record.draws++;
+  });
+
+  return record;
+}
+
+function makeRoles(s, ms = []) {
   const root = document.getElementById("roles");
   root.innerHTML = "";
-  const roles = [
-    ["Single + Pairs", s.singlePairs],
-    ["Singles Only", s.singlesOnly],
-    ["Chalk + Pairs", s.chalkPairs],
-    ["ABSENT", s.absent]
-  ];
-  roles.forEach(([name, count]) => {
+
+  const roles = rolePieData(s);
+  const total = roles.reduce((sum, role) => sum + role.count, 0);
+
+  const piePanel = document.createElement("div");
+  piePanel.className = "rolePiePanel";
+  piePanel.innerHTML = `
+    <div class="rolePie" style="--role-gradient: ${makeRolePieGradient(roles, total)}">
+      <div class="rolePieCenter"><div><b>${total}</b><small>nights</small></div></div>
+    </div>
+    <div class="roleLegend">
+      ${roles.map(role => {
+        const pct = total ? Math.round((role.count / total) * 100) : 0;
+        return `
+          <div class="roleLegendRow">
+            <span class="roleDot" style="background:${role.color}"></span>
+            <span class="roleLegendLabel">${role.label}</span>
+            <span class="roleLegendCount">${role.count}</span>
+            <span class="roleLegendPct">${pct}%</span>
+          </div>
+        `;
+      }).join("")}
+    </div>
+  `;
+  root.appendChild(piePanel);
+
+  const teamPlayingRecord = buildTeamPlayingRecord(ms);
+  const nightsLabel = teamPlayingRecord.played === 1 ? "playing night" : "playing nights";
+  const recordedSuffix = teamPlayingRecord.recorded < teamPlayingRecord.played
+    ? `, ${teamPlayingRecord.recorded} with team result`
+    : "";
+
+  const recordPanel = document.createElement("div");
+  recordPanel.className = "roleRecordPanel";
+  recordPanel.innerHTML = `
+    <div class="roleRecordTitle">Team W/L/D when playing</div>
+    <div class="roleRecordRow">
+      <span class="roleDot" style="background:linear-gradient(135deg, #d7ff73 0 50%, #ff914d 50% 100%)"></span>
+      <div class="roleRecordMain">
+        <div class="roleRecordLabel">Singles + Pairs or Singles Only</div>
+        <div class="roleRecordSub">${teamPlayingRecord.played} ${nightsLabel}${recordedSuffix}</div>
+      </div>
+      <div class="roleRecordScore">${teamPlayingRecord.wins}W ${teamPlayingRecord.losses}L ${teamPlayingRecord.draws}D</div>
+    </div>
+  `;
+  root.appendChild(recordPanel);
+
+  const pills = document.createElement("div");
+  pills.className = "rolePills rolePillsBelow";
+  roles.forEach(role => {
     const p = document.createElement("div");
     p.className = "pill";
-    p.innerHTML = `${name} <small>${count}</small>`;
-    root.appendChild(p);
+    p.innerHTML = `${role.label} <small>${role.count}</small>`;
+    pills.appendChild(p);
   });
-  const activeRoles = roles.filter(r => r[0] !== "ABSENT" && r[1] > 0).length;
-  document.getElementById("roleInsight").innerHTML =
-    `<b>Balance check:</b> ${s.player} has been used across ${activeRoles} active role type${activeRoles === 1 ? "" : "s"}. ` +
-    `${s.chalkPairs >= 2 ? "They have carried chalk duties enough to keep the roster fair." : "They have had limited chalk duty so far."}`;
+  root.appendChild(pills);
 }
 
 function makeProfile(s) {
-  document.getElementById("selectedName").textContent = s.player;
   document.getElementById("kpiWin").textContent = s.winPct + "%";
   document.getElementById("kpiWinSub").textContent = s.gamesWon + " wins, " + s.gamesLost + " losses";
   document.getElementById("kpiGamesWon").textContent = s.gamesWon;
   document.getElementById("kpiMatches").textContent = s.matches;
-  document.getElementById("kpiAbsences").textContent = s.absent;
   const oneEightiesEl = document.getElementById("kpiOneEighties");
   if (oneEightiesEl) oneEightiesEl.textContent = s.oneEighties || 0;
-  document.getElementById("playerProfile").innerHTML = `
-    <div class="playerCard">
-      <div class="mini">Games played<b>${s.gamesPlayed}</b></div>
-      <div class="mini">Games lost<b>${s.gamesLost}</b></div>
-      <div class="mini">Single + Pairs<b>${s.singlePairs}</b></div>
-      <div class="mini">Singles Only<b>${s.singlesOnly}</b></div>
-    </div>
-  `;
 }
 
 function renderMatches() {
@@ -1255,7 +1584,7 @@ function render() {
   const ms = playerMatches(select.value);
 
   makeProfile(s);
-  makeRoles(s);
+  makeRoles(s, ms);
   drawSparkline(ms);
   renderMatches();
 }
