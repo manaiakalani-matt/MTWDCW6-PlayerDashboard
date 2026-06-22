@@ -1456,17 +1456,18 @@ function makeRoles(s, ms = []) {
   root.innerHTML = "";
 
   const roles = rolePieData(s);
-  const total = roles.reduce((sum, role) => sum + role.count, 0);
+  const pieRoles = roles.filter(role => role.key !== "dnp");
+  const pieTotal = pieRoles.reduce((sum, role) => sum + role.count, 0);
 
   const piePanel = document.createElement("div");
   piePanel.className = "rolePiePanel";
   piePanel.innerHTML = `
-    <div class="rolePie" style="--role-gradient: ${makeRolePieGradient(roles, total)}">
-      <div class="rolePieCenter"><div><b>${total}</b><small>nights</small></div></div>
+    <div class="rolePie" style="--role-gradient: ${makeRolePieGradient(pieRoles, pieTotal)}">
+      <div class="rolePieCenter"><div><b>${pieTotal}</b><small>present</small></div></div>
     </div>
     <div class="roleLegend">
-      ${roles.map(role => {
-        const pct = total ? Math.round((role.count / total) * 100) : 0;
+      ${pieRoles.map(role => {
+        const pct = pieTotal ? Math.round((role.count / pieTotal) * 100) : 0;
         return `
           <div class="roleLegendRow">
             <span class="roleDot" style="background:${role.color}"></span>
