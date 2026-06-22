@@ -1006,6 +1006,319 @@ body.dashboardPlayer .hero {
   }
 }
 
+
+/* === Clean layout pass (ChatGPT) === */
+
+/* Put grid span behaviour back under one clear system. */
+.span4 { grid-column: span 4; }
+.span5 { grid-column: span 5; }
+.span6 { grid-column: span 6; }
+.span7 { grid-column: span 7; }
+.span8 { grid-column: span 8; }
+.span12 { grid-column: span 12; }
+
+/* Make every card/panel respect its grid column and stop children pushing containers wider. */
+.grid > .card,
+.grid > .panel,
+.hero > .card,
+.leaderRow,
+.rolePiePanel,
+.roleRecordPanel,
+.teamImpactCard,
+.oneEightyTallyRow,
+.matchCard {
+  min-width: 0;
+}
+
+.panel {
+  min-width: 0;
+}
+
+.sectionTitle {
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+.sectionTitle h2,
+.sectionTitle span,
+.name,
+.meta,
+.teamImpactName,
+.teamImpactMeta,
+.roleLegendLabel,
+.roleRecordLabel,
+.roleRecordSub {
+  min-width: 0;
+}
+
+/* Player role mix: stable, compact, and predictable. */
+.rolePiePanel {
+  grid-template-columns: minmax(130px, 156px) minmax(0, 1fr);
+  align-items: center;
+}
+
+.roleLegendRow {
+  grid-template-columns: 14px minmax(0, 1fr) auto auto;
+}
+
+.roleRecordRow {
+  grid-template-columns: 14px minmax(0, 1fr) auto;
+}
+
+.roleRecordScore,
+.roleLegendCount,
+.roleLegendPct {
+  white-space: nowrap;
+}
+
+/* Home impact cards: keep them visually different, but calmer and less bulky. */
+.teamImpactSection {
+  background:
+    radial-gradient(circle at 14% 22%, rgba(215,255,115,.10), transparent 18rem),
+    radial-gradient(circle at 92% 20%, rgba(255,145,77,.11), transparent 20rem),
+    linear-gradient(180deg, rgba(35,35,38,.95), rgba(13,13,15,.94));
+}
+
+.teamImpactGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+  gap: 12px;
+}
+
+.teamImpactCard {
+  padding: 14px;
+  border-radius: 18px;
+}
+
+.teamImpactName {
+  font-size: clamp(20px, 2.1vw, 25px);
+  overflow-wrap: anywhere;
+}
+
+.teamImpactTop {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.teamImpactPct {
+  width: 66px;
+  height: 66px;
+  border-radius: 19px;
+  font-size: 29px;
+  flex: 0 0 auto;
+}
+
+.teamImpactStats {
+  gap: 7px;
+}
+
+.teamImpactStat {
+  padding: 9px 6px;
+}
+
+.teamImpactStat b {
+  font-size: 22px;
+}
+
+.teamImpactRecord {
+  line-height: 1.35;
+}
+
+/* Desktop player page: the player-only KPIs now sit evenly after removing absences/profile. */
+@media (min-width: 721px) {
+  body.dashboardPlayer .kpi {
+    grid-column: span 3;
+  }
+}
+
+/* Tablet and narrow desktop. */
+@media (max-width: 980px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .span4,
+  .span5,
+  .span6,
+  .span7,
+  .span8,
+  .span12 {
+    grid-column: span 12;
+  }
+
+  .heroSide {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Phone layout. This appears after all base card styles so it wins the cascade. */
+@media (max-width: 720px) {
+  .app {
+    padding: 12px;
+    padding-bottom: 28px;
+  }
+
+  .hero,
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .grid {
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .card {
+    border-radius: 20px;
+  }
+
+  .heroMain,
+  .panel {
+    padding: 15px;
+  }
+
+  .heroSide {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .kpi,
+  .span4,
+  .span5,
+  .span6,
+  .span7,
+  .span8,
+  .span12 {
+    grid-column: span 1;
+  }
+
+  body.dashboardPlayer .kpi {
+    grid-column: span 1;
+  }
+
+  .sectionTitle {
+    align-items: flex-start;
+    gap: 6px 10px;
+  }
+
+  .sectionTitle h2 {
+    font-size: 21px;
+  }
+
+  .leaderRow {
+    grid-template-columns: 32px minmax(0, 1fr) 52px;
+    gap: 8px;
+  }
+
+  .rolePiePanel {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 12px;
+  }
+
+  .roleLegend {
+    width: 100%;
+  }
+
+  .rolePie {
+    width: 138px;
+  }
+
+  .roleRecordRow {
+    grid-template-columns: 14px minmax(0, 1fr);
+  }
+
+  .roleRecordScore {
+    grid-column: 2;
+    justify-self: start;
+    margin-top: 2px;
+  }
+
+  .rolePills {
+    gap: 8px;
+  }
+
+  .pill {
+    font-size: 12px;
+    padding: 9px 10px;
+  }
+
+  .teamImpactGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .teamImpactTop {
+    grid-template-columns: minmax(0, 1fr) 62px;
+    gap: 10px;
+  }
+
+  .teamImpactPct {
+    width: 62px;
+    height: 62px;
+    border-radius: 18px;
+    font-size: 27px;
+  }
+
+  .teamImpactName {
+    font-size: 22px;
+  }
+
+  .teamImpactStats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .teamImpactIntro {
+    font-size: 13px;
+  }
+
+  .oneEightyTallyRow {
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .oneEightyCount {
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+  }
+
+  .oneEightyNames {
+    font-size: 18px;
+    overflow-wrap: anywhere;
+  }
+
+  table {
+    display: none;
+  }
+
+  .mobileMatchCards {
+    display: grid;
+    gap: 10px;
+  }
+}
+
+/* Very small phones. */
+@media (max-width: 390px) {
+  .heroSide {
+    grid-template-columns: 1fr;
+  }
+
+  h1 {
+    font-size: 30px;
+  }
+
+  .teamImpactTop {
+    grid-template-columns: 1fr;
+  }
+
+  .teamImpactPct {
+    width: 100%;
+    height: auto;
+    min-height: 54px;
+  }
+}
+
+/* === End clean layout pass === */
+
 </style>
 </head>
 <body class="dashboardHome">
